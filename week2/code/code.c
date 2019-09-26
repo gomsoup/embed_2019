@@ -40,33 +40,33 @@ int main (){
 		if(~*(volatile unsigned int *)(GPIO_PORTD_BASE + GPIO_IDR_OFFSET) & USR_SEL){ // PD11(user button) pressed
 			switch(i % 3){ 
 				case 0:
-					*(volatile unsigned int *)(GPIO_PORTD_BASE + GPIO_BSRR_OFFSET) = MOVE_F;
+					*(volatile unsigned int *)(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) = MOVE_F;
 					break;
 				       
 				case 1:
-					*(volatile unsigned int *)(GPIO_PORTD_BASE + GPIO_BSRR_OFFSET) = MOVE_L;
+					*(volatile unsigned int *)(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) = MOVE_L;
 					break;
 				case 2:
-					*(volatile unsigned int *)(GPIO_PORTD_BASE + GPIO_BSRR_OFFSET) = MOVE_R;
+					*(volatile unsigned int *)(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) = MOVE_R;
 					break;
 			}
 			for(i = 0; i < 5000000; i++){}
 		}
 		else if(~*(volatile unsigned int *)(GPIO_PORTC_BASE + GPIO_IDR_OFFSET & UP_BUTTON)){ // up button pressed
-			vsi(GPIO_PORTD_BASE + GPIO_BSRR_OFFSET) = MOVE_F;
+			vsi(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) = MOVE_F;
 			for(i = 0; i < 5000000; i++){}
 		}
 		else if(~vsi(GPIO_PORTC_BASE + GPIO_IDR_OFFSET) & LEFT_BUTTON){
-			vsi(GPIO_PORTD_BASE + GPIO_BSRR_OFFSET) = MOVE_L;
+			vsi(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) = MOVE_L;
 			for(i = 0; i < 5000000; i++){}
 		}
 		else if(~vsi(GPIO_PORTC_BASE + GPIO_IDR_OFFSET) & RIGHT_BUTTON){
-			vsi(GPIO_PORTD_BASE + GPIO_BSRR_OFFSET) = MOVE_R;
+			vsi(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) = MOVE_R;
 			for(i = 0; i < 5000000; i++){}
 		}
 
 		
-		vsi(GPIO_PORTD_BASE + GPIO_BSRR_OFFSET) = 0x00000000;
+		vsi(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) = 0x30000000;
 	}
 
 	return 0;
