@@ -31,18 +31,17 @@
 
 int main () {
     unsigned int i = 0;
-    *(volatile unsigned int *)(RCC_BASE + RCC_OFFSET) |= 0x38; // set Port Clock B, C, D
-    *(volatile unsigned int *)(GPIO_PORTC_BASE) = 0x44888844; // set PortC 2, 3, 4, 5 as input
-    *(volatile unsigned int *)(GPIO_PORTC_BASE + GPIO_CRH_OFFSET) = 0x44444411; // set PortC 8, 9 as output
-    *(volatile unsigned int *)(GPIO_PORTD_BASE + GPIO_CRH_OFFSET) = 0x44448444; // set PORTD 11 as input
+    vsi(RCC_BASE + RCC_OFFSET) |= 0x38; // set Port Clock B, C, D
+    vsi(GPIO_PORTC_BASE) = 0x44488844; // set PortC 2, 3, 4, 5 as input
+    vsi(GPIO_PORTC_BASE + GPIO_CRH_OFFSET) = 0x44444411; // set PortC 8, 9 as output
+    vsi(GPIO_PORTD_BASE + GPIO_CRH_OFFSET) = 0x44448444; // set PORTD 11 as input
 
     while(1) {
-        if(~*(volatile unsigned int *)(GPIO_PORTD_BASE + GPIO_IDR_OFFSET) & USR_SEL) { // PD11(user button) pressed
+        if(~vsi(GPIO_PORTD_BASE + GPIO_IDR_OFFSET) & USR_SEL) { // user button pressed -> Random
             switch(i % 3) {
             case 0:
                 *(volatile unsigned int *)(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) = MOVE_F;
                 break;
-
             case 1:
                 *(volatile unsigned int *)(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) = MOVE_L;
                 break;
@@ -52,23 +51,22 @@ int main () {
             }
             for(i = 0; i < 5000000; i++) {}
         }
-        else if(~*(volatile unsigned int *)(GPIO_PORTC_BASE + GPIO_IDR_OFFSET)& UP_BUTTON) { // up button pressed
-            vsi(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) |= MOVE_F;
-            vsi(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) |= 0x10;
+        else if(~vsi(GPIO_PORTC_BASE + GPIO_IDR_OFFSET)& UP_BUTTON) { // up button pressed -> move Forward
+            vsi(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) = MOVE_F;
             for(i = 0; i < 5000000; i++) {}
         }
-        else if(~vsi(GPIO_PORTC_BASE + GPIO_IDR_OFFSET) & LEFT_BUTTON) {
+        else if(~vsi(GPIO_PORTC_BASE + GPIO_IDR_OFFSET) & LEFT_BUTTON) { // Left button pressed -> Left turn
             vsi(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) = MOVE_L;
             for(i = 0; i < 5000000; i++) {}
         }
-        else if(~vsi(GPIO_PORTC_BASE + GPIO_IDR_OFFSET) & RIGHT_BUTTON) {
+        else if(~vsi(GPIO_PORTC_BASE + GPIO_IDR_OFFSET) & RIGHT_BUTTON) { // Right button pressed -> Right turn
             vsi(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) = MOVE_R;
             for(i = 0; i < 5000000; i++) {}
         }
 
 
-        vsi(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) = 0x0000FFFF;
-        i++;
+        vsi(GPIO_PORTC_BASE + GPIO_BSRR_OFFSET) |= 0x300; // reset
+        i++; // random count
     }
 
     return 0;
