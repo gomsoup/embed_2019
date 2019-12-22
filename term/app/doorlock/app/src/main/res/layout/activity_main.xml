@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+    <TextView android:textSize="40dp" android:textStyle="bold" android:text="Change Password" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/textchangepw"/>
+    <EditText android:id="@+id/edittext" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Password"/>
+    <Button android:id="@+id/changepwbtn" android:layout_height="wrap_content" android:layout_width="match_parent" android:textSize="20dp" android:text="Set" android:layout_gravity="center"/>
+    <TextView android:textSize="25dp" android:textStyle="bold" android:text="Request Temporary Password" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/texttemppw"/>
+    <TextView android:textSize="20dp" android:textStyle="bold" android:text="" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/temppw"/>
+    <Button android:id="@+id/temppwbtn" android:layout_height="wrap_content" android:layout_width="match_parent" android:textSize="20dp" android:text="Request" android:layout_gravity="center"/>
+</LinearLayout>
