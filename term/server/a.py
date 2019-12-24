@@ -45,6 +45,27 @@ def getInput():
             print("temp passwd : ", temp)
             fd.close()
 
+        if data == 'REQT':
+            fd = open('./temp')
+            pw = fd.read(4)
+
+            if not pw:
+                pw = "0000"
+            
+            con.send(pw.encode('utf-8'))
+            fd.close()
+
+        if data == "DELT":
+            open('./temp', "w").close()
+            fd = open('./temp', "w")
+
+            fd.write("0000")
+            fd.close()
+            
+            con.send('OKOK'.encode('utf-8'))
+            print("delete temp passwd");
+
+
         if data == 'URGT': # argent moment
             fd = open('/home/ubuntu/api_key')
             key = fd.readline().splitlines()
@@ -52,10 +73,29 @@ def getInput():
 
             print("Urgent alert pushed")
             fd.close()
+        
+        if data == 'URDR':
+            fd = open('/home/ubuntu/api_key')
+            key = fd.readline().splitlines()
+            pushFCM("URGENT!", "문이 열렸습니다!", key[0])
+
+            print("Urgent door open alert pushed")
+            fd.close()
+
+        if data == 'OVRP':
+            fd = open('/home/ubuntu/api_key')
+            key = fd.readline().splitlines()
+            pushFCM("URGENT!", "비밀번호가 3회 틀렸습니다!", key[0])
+
+            print("Password wrong !")
+            fd.close()
 
         if data == 'UDAT':
             open('./pass', 'w').close()
             fd = open('./pass', 'w')
+            con.send('PSWD'.encode('utf-8'))
+            print('request password change ')
+
             password = con.recv(4).decode()
             
             print("update passwd ", password)
@@ -77,4 +117,3 @@ while True:
     con, addr = s.accept()
     print('Connected by :' , addr)
     threading._start_new_thread(getInput, ())
-
